@@ -1,0 +1,30 @@
+name: Node.js CI
+
+# Adiciona suporte para execução manual
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: [16.x, 18.x]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js ${{ matrix.node }} on ${{ matrix.os }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node }}
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test
